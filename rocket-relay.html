@@ -1,0 +1,624 @@
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+<!--
+*
+	{box-sizing:border-box;
+	margin:0;
+	padding:0}
+html, body
+	{height:100%;
+	font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+	font-size:14px;
+	color:#1a1a1a;
+	background:#f4f4f4}
+:root
+	{}
+.app
+	{display:grid;
+	height:100vh;
+	overflow:hidden}
+.topbar
+	{background:#CC0000;
+	color:#fff;
+	display:flex;
+	align-items:center;
+	padding:0 16px;
+	border-bottom:2px solid #A30000}
+.topbar-logo
+	{font-weight:600;
+	font-size:16px;
+	letter-spacing:-0.3px}
+.topbar-sub
+	{font-size:12px;
+	opacity:.75;
+	font-weight:400}
+.topbar-meta
+	{display:flex;
+	align-items:center;
+	margin-left:auto;
+	font-size:12px}
+.topbar-chip
+	{background:rgba(255,255,255,.18);
+	border-radius:4px;
+	padding:2px 8px;
+	border:1px solid rgba(255,255,255,.25)}
+.topbar-chip strong
+	{font-weight:600}
+.topbar-status
+	{font-size:11px;
+	opacity:.6;
+	margin-left:4px}
+.topbar-actions
+	{display:flex;
+	margin-left:12px}
+.btn-sm
+	{font-size:11px;
+	padding:4px 12px;
+	border-radius:4px;
+	border:1px solid rgba(255,255,255,.4);
+	background:transparent;
+	color:#fff;
+	font-family:inherit}
+.sidebar
+	{background:#fff;
+	padding:12px;
+	overflow-y:auto;
+	display:flex;
+	flex-direction:column}
+.panel-label
+	{font-size:10px;
+	font-weight:600;
+	letter-spacing:.07em;
+	text-transform:uppercase;
+	margin-bottom:5px}
+.bp-label
+	{font-size:10px;
+	margin-bottom:7px;
+	line-height:1.4}
+.opp-card
+	{padding:8px 10px}
+.opp-card.active
+	{border-color:#CC0000;
+	background:#FCEBEB}
+.opp-dot
+	{width:6px;
+	height:6px;
+	border-radius:50%;
+	background:#CC0000;
+	right:8px;
+	top:8px}
+.opp-name
+	{font-size:12px;
+	font-weight:600}
+.opp-id
+	{font-size:11px}
+.opp-score
+	{font-size:20px;
+	font-weight:600;
+	color:#CC0000}
+.opp-label
+	{font-size:11px;
+	line-height:1.3;
+	margin-top:3px}
+.opp-viewing
+	{font-size:10px;
+	color:#CC0000;
+	margin-top:5px}
+.tip-box
+	{background:#FCEBEB;
+	border:1px solid #F7C1C1;
+	padding:10px;
+	font-size:11px;
+	color:#791F1F;
+	line-height:1.55}
+.tip-label
+	{font-size:10px;
+	font-weight:600;
+	color:#CC0000;
+	margin-bottom:4px}
+.main
+	{background:#f4f4f4;
+	overflow-y:auto;
+	display:flex;
+	flex-direction:column}
+.section-head
+	{padding:10px 14px 7px;
+	background:#fff;
+	display:flex;
+	align-items:center;
+	flex-shrink:0}
+.section-title
+	{font-size:12px;
+	font-weight:600}
+.section-hint
+	{font-size:11px;
+	margin-left:auto}
+.transcript
+	{flex:1;
+	padding:10px 14px;
+	display:flex;
+	flex-direction:column}
+.t-line
+	{display:flex;
+	align-items:flex-start;
+	padding:6px 7px;
+	border:1px solid transparent}
+.t-line.marked-issue
+	{background:#FCEBEB;
+	border-color:#F7C1C1}
+.t-line.marked-priority
+	{background:#E8F4FD;
+	border-color:#B5D4F4}
+.t-speaker
+	{font-size:10px;
+	font-weight:600;
+	min-width:36px;
+	padding-top:3px}
+.t-speaker.banker
+	{color:#CC0000}
+.t-text
+	{font-size:12px;
+	line-height:1.55;
+	flex:1}
+.t-actions
+	{display:flex;
+	opacity:0;
+	flex-shrink:0}
+.t-btn
+	{font-size:10px;
+	padding:2px 7px;
+	border-radius:4px;
+	background:#fff;
+	font-family:inherit}
+.t-btn.issue
+	{border-color:#F7C1C1;
+	color:#CC0000;
+	background:#FCEBEB}
+.t-btn.priority
+	{border-color:#B5D4F4;
+	color:#185FA5;
+	background:#E8F4FD}
+.right
+	{background:#fff;
+	display:flex;
+	flex-direction:column;
+	overflow-y:auto}
+.rpanel
+	{padding:10px 12px}
+.rpanel-title
+	{font-size:11px;
+	font-weight:600;
+	margin-bottom:7px;
+	display:flex;
+	align-items:center}
+.count-badge
+	{font-size:10px;
+	background:#CC0000;
+	color:#fff;
+	border-radius:10px;
+	padding:1px 6px;
+	font-weight:600}
+.count-badge.blue
+	{background:#185FA5}
+.empty-state
+	{font-size:11px;
+	line-height:1.5}
+.issue-item, .priority-item
+	{font-size:11px;
+	padding:6px 8px;
+	margin-bottom:4px;
+	border-left:2px solid #CC0000;
+	line-height:1.4}
+.priority-item
+	{border-left-color:#185FA5}
+.item-reg
+	{font-size:10px;
+	color:#CC0000;
+	font-weight:600;
+	margin-top:3px}
+.item-tag
+	{font-size:10px;
+	color:#185FA5;
+	font-weight:600;
+	margin-top:3px}
+.script-builder
+	{padding:10px 12px;
+	flex:1;
+	display:flex;
+	flex-direction:column}
+.tab-row
+	{display:flex;
+	padding:3px}
+.tab
+	{flex:1;
+	text-align:center;
+	font-size:11px;
+	font-weight:500;
+	padding:4px 4px;
+	border-radius:6px;
+	border:none;
+	background:transparent;
+	font-family:inherit}
+.tab.active
+	{background:#fff;
+	font-weight:600}
+.gen-btn
+	{width:100%;
+	padding:7px;
+	background:#CC0000;
+	color:#fff;
+	font-size:12px;
+	font-weight:600;
+	border:none;
+	font-family:inherit}
+.script-area
+	{padding:8px 10px;
+	font-size:11px;
+	line-height:1.65;
+	min-height:80px;
+	white-space:pre-wrap;
+	display:none;
+	outline:none}
+.script-area.visible
+	{display:block}
+.action-row
+	{display:flex}
+.act-btn
+	{flex:1;
+	padding:6px;
+	font-size:11px;
+	font-weight:600;
+	background:transparent;
+	font-family:inherit}
+.act-btn.approve
+	{background:#CC0000;
+	color:#fff;
+	border-color:#CC0000}
+.status-brief-panel
+	{background:#FCEBEB;
+	border:1px solid #F7C1C1;
+	padding:10px}
+.sb-header
+	{display:flex;
+	align-items:center;
+	margin-bottom:10px}
+.sb-icon
+	{width:26px;
+	height:26px;
+	border-radius:50%;
+	background:#CC0000;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	flex-shrink:0}
+.sb-title
+	{font-size:11px;
+	font-weight:600;
+	color:#791F1F}
+.sb-subtitle
+	{font-size:10px;
+	color:#A30000;
+	margin-top:1px}
+.stage-section-label
+	{font-size:10px;
+	color:#791F1F;
+	margin-bottom:5px;
+	font-weight:600}
+.loan-stage
+	{display:flex;
+	flex-direction:column;
+	margin-bottom:10px}
+.stage-item
+	{display:flex;
+	align-items:center;
+	font-size:11px}
+.stage-dot
+	{width:8px;
+	height:8px;
+	border-radius:50%;
+	flex-shrink:0}
+.stage-dot.done
+	{background:#639922}
+.stage-dot.active
+	{background:#CC0000;
+	box-shadow:0 0 0 2px #F7C1C1}
+.stage-dot.pending
+	{background:#ccc}
+.stage-label.active
+	{font-weight:600;
+	color:#791F1F}
+.stage-label.pending
+	{color:#bbb}
+.opt-in-row
+	{display:flex;
+	align-items:center;
+	padding:7px 0;
+	border-top:1px solid #F7C1C1;
+	border-bottom:1px solid #F7C1C1;
+	margin-bottom:8px}
+.opt-toggle
+	{width:30px;
+	height:17px;
+	border-radius:9px;
+	background:#CC0000;
+	border:none;
+	flex-shrink:0;
+	padding:0}
+.opt-toggle.off
+	{background:#ccc}
+.opt-knob
+	{width:13px;
+	height:13px;
+	border-radius:50%;
+	background:#fff;
+	top:2px;
+	left:15px}
+.opt-toggle.off .opt-knob
+	{left:2px}
+.opt-label
+	{font-size:10px;
+	color:#791F1F;
+	line-height:1.4}
+.preview-box
+	{background:#fff;
+	border:1px solid #F7C1C1;
+	padding:8px 10px;
+	margin-bottom:7px}
+.preview-label
+	{font-size:9px;
+	font-weight:600;
+	color:#CC0000;
+	text-transform:uppercase;
+	letter-spacing:.07em;
+	margin-bottom:5px;
+	display:flex;
+	align-items:center}
+.preview-text
+	{font-size:11px;
+	line-height:1.65;
+	font-style:italic}
+.guardrail-box
+	{font-size:10px;
+	color:#A30000;
+	background:#fff3f3;
+	border-radius:4px;
+	padding:5px 8px;
+	margin-bottom:8px;
+	border-left:2px solid #CC0000;
+	line-height:1.5}
+.approve-sb-btn
+	{width:100%;
+	padding:7px;
+	background:#CC0000;
+	color:#fff;
+	font-size:11px;
+	font-weight:600;
+	border:none;
+	font-family:inherit}
+.approved-badge
+	{display:none;
+	text-align:center;
+	font-size:11px;
+	color:#3B6D11;
+	font-weight:600;
+	padding:5px;
+	background:#EAF3DE;
+	border:1px solid #C0DD97}
+.disclosure
+	{font-size:10px;
+	padding:10px 12px;
+	line-height:1.55;
+	flex-shrink:0}
+-->
+</style>
+</head>
+<body>
+<div class="app">
+<div class="topbar"><span class="topbar-logo">Rocket Relay</span> <span class="topbar-sub">
+Banker Script Console</span>
+<div class="topbar-meta"><span class="topbar-chip">Call <strong>#4471</strong></span>
+<span class="topbar-chip">Banker <strong>Jordan Alvarez</strong></span> <span class="topbar-chip">
+Client <strong>Morgan Lee</strong></span> <span class="topbar-status">Reviewing</span>
+</div>
+<div class="topbar-actions"><button class="btn-sm">Reset demo</button> </div>
+</div>
+<div class="sidebar">
+<div>
+<div class="panel-label">Opportunity feed</div>
+<div class="bp-label">Sourced from <strong>Banana Phone</strong> — a hypothetical third-party call-scoring integration shown for concept purposes only.</div>
+<div style="font-size:10px; color:#888; margin-bottom:8px; font-weight:500">Top opportunity calls today</div>
+<div class="opp-card active" style="margin-bottom:6px">
+<div class="opp-dot"></div>
+<div style="display:flex; justify-content:space-between; align-items:flex-start">
+<div>
+<div class="opp-name">Morgan Lee</div>
+<div class="opp-id">#4471</div>
+</div>
+<div class="opp-score">92</div>
+</div>
+<div class="opp-label">Rate-sensitive refi, hard close deadline</div>
+<div class="opp-viewing">● Viewing this call</div>
+</div>
+<div class="opp-card" style="margin-bottom:6px">
+<div style="display:flex; justify-content:space-between; align-items:flex-start">
+<div>
+<div class="opp-name">Dana Whitfield</div>
+<div class="opp-id">#4438</div>
+</div>
+<div class="opp-score muted">87</div>
+</div>
+<div class="opp-label">Pre-qualified, comparing two lenders</div>
+</div>
+<div class="opp-card" style="margin-bottom:6px">
+<div style="display:flex; justify-content:space-between; align-items:flex-start">
+<div>
+<div class="opp-name">Theo Brandt</div>
+<div class="opp-id">#4502</div>
+</div>
+<div class="opp-score muted">81</div>
+</div>
+<div class="opp-label">High DTI, alt-doc income review needed</div>
+</div>
+<div class="opp-card">
+<div style="display:flex; justify-content:space-between; align-items:flex-start">
+<div>
+<div class="opp-name">Priya Nathan</div>
+<div class="opp-id">#4509</div>
+</div>
+<div class="opp-score muted">74</div>
+</div>
+<div class="opp-label">First-time buyer, FHA likely fit</div>
+</div>
+</div>
+<div class="tip-box">
+<div class="tip-label">Banana Phone script tip</div>
+For Call #4471: lead with a written Loan Estimate commitment before quoting a rate — Morgan's deadline pressure raises the chance of a verbal-only promise slipping through.
+</div>
+</div>
+<div class="main">
+<div class="section-head"><i class="ti ti-messages" style="font-size:14px; color:#CC0000"></i><span class="section-title">Call transcript</span>
+<span class="section-hint">Tap issue or priority on a line to mark it and pin a note. Marked lines feed the panels on the right.</span>
+</div>
+<div class="transcript" id="transcript">
+<div class="t-line" id="l0"><span class="t-speaker banker">JA</span> <span class="t-text">
+Hey Morgan, thanks for calling in today. I know you mentioned last week that the rate situation has been stressing you out — let's see what we can do to lock something in before your deadline.</span>
+<div class="t-actions"><button class="t-btn issue">Issue</button><button class="t-btn priority">
+Priority</button> </div>
+</div>
+<div class="t-line" id="l1"><span class="t-speaker">ML</span> <span class="t-text">
+Yeah, I'm a little anxious. The deadline to close is the 28th and I just want to know we're on track. I haven't heard from anyone since the appraisal came back.</span>
+<div class="t-actions"><button class="t-btn issue">Issue</button><button class="t-btn priority">
+Priority</button> </div>
+</div>
+<div class="t-line" id="l2"><span class="t-speaker banker">JA</span> <span class="t-text">
+Completely understandable. I can see the appraisal came back at value, so that's cleared. We're currently in underwriting review — the processor has everything they need right now.</span>
+<div class="t-actions"><button class="t-btn issue">Issue</button><button class="t-btn priority">
+Priority</button> </div>
+</div>
+<div class="t-line" id="l3"><span class="t-speaker">ML</span> <span class="t-text">
+Okay good. So the rate I'm locking in — is that still 6.75? Because I've been seeing some movement online and I'm worried.</span>
+<div class="t-actions"><button class="t-btn issue">Issue</button><button class="t-btn priority">
+Priority</button> </div>
+</div>
+<div class="t-line" id="l4"><span class="t-speaker banker">JA</span> <span class="t-text">
+I want to make sure we get you a written Loan Estimate on that before I quote anything firm. The rate environment has shifted a bit this week, so let me confirm the current numbers and send that over to you today.</span>
+<div class="t-actions"><button class="t-btn issue">Issue</button><button class="t-btn priority">
+Priority</button> </div>
+</div>
+<div class="t-line" id="l5"><span class="t-speaker">ML</span> <span class="t-text">
+That works. Also, is there a way I can just check in on where things are without having to call every time? I don't want to be a bother but I get anxious not knowing.</span>
+<div class="t-actions"><button class="t-btn issue">Issue</button><button class="t-btn priority">
+Priority</button> </div>
+</div>
+<div class="t-line" id="l6"><span class="t-speaker banker">JA</span> <span class="t-text">
+Absolutely — I'll make sure you have a way to get a quick status update even when I'm tied up. No need to wait on hold just to hear where things stand.</span>
+<div class="t-actions"><button class="t-btn issue">Issue</button><button class="t-btn priority">
+Priority</button> </div>
+</div>
+<div class="t-line" id="l7"><span class="t-speaker">ML</span> <span class="t-text">
+That would honestly be such a relief. Okay, what do I need to do before the 28th?</span>
+<div class="t-actions"><button class="t-btn issue">Issue</button><button class="t-btn priority">
+Priority</button> </div>
+</div>
+<div class="t-line" id="l8"><span class="t-speaker banker">JA</span> <span class="t-text">
+Right now, nothing on your end — just review the Loan Estimate I'll send you today and confirm the terms. Underwriting should clear by Thursday, then we'll schedule your closing.</span>
+<div class="t-actions"><button class="t-btn issue">Issue</button><button class="t-btn priority">
+Priority</button> </div>
+</div>
+</div>
+</div>
+<div class="right">
+<div class="rpanel">
+<div class="rpanel-title"><i class="ti ti-alert-triangle" style="color:#CC0000; font-size:13px"></i>Critical issues
+<span class="count-badge" id="issue-count">0</span> </div>
+<div id="issues-list">
+<div class="empty-state">No issues marked yet. Tag a transcript line as an issue to log it here with the regulation and a next step.</div>
+</div>
+</div>
+<div class="rpanel">
+<div class="rpanel-title"><i class="ti ti-star" style="color:#185FA5; font-size:13px"></i>Client priorities
+<span class="count-badge blue" id="priority-count">0</span> </div>
+<div id="priorities-list">
+<div class="empty-state">No priorities marked yet. Tag a transcript line as a priority to track what Morgan actually cares about.</div>
+</div>
+</div>
+<div class="rpanel" style="border-bottom:none; flex:1; display:flex; flex-direction:column">
+<div class="rpanel-title"><i class="ti ti-file-text" style="color:#CC0000; font-size:13px"></i>Script builder
+</div>
+<div style="display:flex; flex-direction:column; flex:1">
+<div class="tab-row"><button class="tab active" id="tab-sms">SMS</button><button class="tab" id="tab-voice">
+Voice AI</button><button class="tab" id="tab-status">Status brief</button> </div>
+<div id="pane-sms">
+<div style="font-size:10px; color:#888; padding:4px 0 6px; line-height:1.4">Compose an SMS follow-up based on marked moments.</div>
+<button class="gen-btn" id="gen-sms" disabled="">Generate script</button>
+<div class="script-area" id="script-sms"></div>
+<div class="action-row" id="actions-sms" style="display:none; margin-top:6px"><button class="act-btn approve">
+Approve &amp; send</button><button class="act-btn">Make changes</button> </div>
+</div>
+<div id="pane-voice" style="display:none">
+<div style="font-size:10px; color:#888; padding:4px 0 6px; line-height:1.4">Draft a Voice AI follow-up script from marked priorities.</div>
+<button class="gen-btn" id="gen-voice" disabled="">Generate script</button>
+<div class="script-area" id="script-voice"></div>
+<div class="action-row" id="actions-voice" style="display:none; margin-top:6px"><button class="act-btn approve">
+Approve &amp; send</button><button class="act-btn">Make changes</button> </div>
+</div>
+<div id="pane-status" style="display:none">
+<div class="status-brief-panel">
+<div class="sb-header">
+<div class="sb-icon"><i class="ti ti-phone" style="font-size:12px; color:#fff"></i></div>
+<div>
+<div class="sb-title">AI status brief — Morgan Lee</div>
+<div class="sb-subtitle">Loan #4471 · Refinance</div>
+</div>
+</div>
+<div class="stage-section-label">Current loan stage</div>
+<div class="loan-stage">
+<div class="stage-item">
+<div class="stage-dot done"></div>
+<span class="stage-label done">Application received</span> </div>
+<div class="stage-item">
+<div class="stage-dot done"></div>
+<span class="stage-label done">Document collection</span> </div>
+<div class="stage-item">
+<div class="stage-dot done"></div>
+<span class="stage-label done">Appraisal — cleared at value</span> </div>
+<div class="stage-item">
+<div class="stage-dot active"></div>
+<span class="stage-label active">Underwriting review ← current</span> </div>
+<div class="stage-item">
+<div class="stage-dot pending"></div>
+<span class="stage-label pending">Clear to close</span> </div>
+<div class="stage-item">
+<div class="stage-dot pending"></div>
+<span class="stage-label pending">Closing scheduled</span> </div>
+</div>
+<div class="opt-in-row"><button class="opt-toggle" id="opt-toggle" aria-label="Toggle client opt-in">
+<div class="opt-knob" id="opt-knob"></div>
+</button>
+<div class="opt-label"><strong>Client opted in</strong> — Morgan chose AI status updates when Jordan is unavailable</div>
+</div>
+<div class="preview-box">
+<div class="preview-label"><i class="ti ti-volume" style="font-size:11px"></i>AI voice preview
+</div>
+<div class="preview-text">&quot;Hi Morgan, this is an automated status update for your loan with Rocket Mortgage. Your file is currently in underwriting review. The appraisal has cleared at value and all documents are on file. Your banker Jordan will follow up once
+ underwriting is complete — expected by Thursday. For questions or actions on your file, please call back to speak with your banker directly. Thank you.&quot;</div>
+</div>
+<div class="guardrail-box"><strong>Guardrails:</strong> The AI only reads this approved summary. It does not answer questions, advise on rates, or commit to timelines. Any question routes back to Jordan.
+</div>
+<button class="approve-sb-btn" id="approve-sb">Approve status brief</button>
+<div class="approved-badge" id="sb-approved"><i class="ti ti-check"></i>Status brief active — Morgan can call for updates
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="disclosure"><strong>Rocket Relay</strong> is a concept mockup styled for Rocket Mortgage with a sample call — not an official Rocket Mortgage product, and not connected to a live call vendor or messaging system. The
+<strong>Banana Phone</strong> opportunity feed is a hypothetical integration invented for this concept and pulls no real data. Regulatory citations reflect general industry training material and are shown for illustrative purposes only — they are not legal
+ advice and should not be relied on for actual compliance decisions. </div>
+</div>
+</div>
+</body>
+</html>
